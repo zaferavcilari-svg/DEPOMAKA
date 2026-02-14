@@ -60,3 +60,16 @@ canvas.addEventListener("mousemove", (e) => {
 canvas.addEventListener("mouseup", () => dragging = false);
 
 draw();
+const palette = document.getElementById("palette");
+
+for (let i = 0; i < 360; i += 10) {
+  const div = document.createElement("div");
+  div.className = "color";
+  div.style.backgroundColor = `hsl(${i}, 100%, 50%)`;
+
+  div.onclick = () => {
+    selectedColor = `hsl(${i}, 100%, 50%)`;
+  };
+
+  palette.appendChild(div);
+                       }
