@@ -1,19 +1,62 @@
 const canvas = document.getElementById("board");
 const ctx = canvas.getContext("2d");
 
-const gridSize = 50;
-const pixelSize = 10;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-canvas.width = gridSize * pixelSize;
-canvas.height = gridSize * pixelSize;
+const worldSize = 2000;
+const pixelSize = 4;
+
+let offsetX = worldSize / 2 - canvas.width / 2;
+let offsetY = worldSize / 2 - canvas.height / 2;
+
+let selectedColor = "red";
+
+const pixels = {};
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+  ctx.fillRect(-offsetX, -offsetY, worldSize, worldSize);
+
+  for (let key in pixels) {
+    const [x, y] = key.split("_").map(Number);
+    ctx.fillStyle = pixels[key];
+    ctx.fillRect(x - offsetX, y - offsetY, pixelSize, pixelSize);
+  }
+}
 
 canvas.addEventListener("click", (e) => {
-  const rect = canvas.getBoundingClientRect();
-  const x = Math.floor((e.clientX - rect.left) / pixelSize);
-  const y = Math.floor((e.clientY - rect.top) / pixelSize);
-
-  const color = document.getElementById("colorPicker").value;
-
-  ctx.fillStyle = color;
-  ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+  const x = Math.floor((e.clientX + offsetX) / pixelSize) * pixelSize;
+  const y = Math.floor((e.clientY + offsetY) / pixelSize) * pixelSize;
+  pixels[`${x}_${y}`] = selectedColor;
+  draw();
 });
+
+let dragging = false;
+let startX, startY;
+
+canvas.addEventListener("mousedown", (e) => {
+  dragging = true;
+  startX = e.clientX;
+  startY = e.clientY;
+});
+
+canvas.addEventListener("mousemove", (e) => {
+  if (!dragging) return;
+
+  offsetX -= e.clientX - startX;
+  offsetY -= e.clientY - startY;
+
+  offsetX = Math.max(0, Math.min(worldSize - canvas.width, offsetX));
+  offsetY = Math.max(0, Math.min(worldSize - canvas.height, offsetY));
+
+  startX = e.clientX;
+  startY = e.clientY;
+
+  draw();
+});
+
+canvas.addEventListener("mouseup", () => dragging = false);
+
+draw();
