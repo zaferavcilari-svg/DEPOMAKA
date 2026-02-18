@@ -1,18 +1,54 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>ArtCanvasDijitalPixel</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Pro r/place 2048</title>
+
+<style>
+body{
+    margin:0;
+    background:#dcdcdc;
+    font-family:Arial;
+}
+
+.menu{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+button{
+    padding:12px 20px;
+    font-size:16px;
+    cursor:pointer;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="menu-buttons">
-    <button onclick="goToGame()">Join Server</button>
-    <button onclick="goToSettings()">Settings</button>
-    <button onclick="goToProfile()">Profile</button>
-  </div>
+<div class="menu">
+    <button onclick="goGame()">Join Server</button>
+    <button onclick="goSettings()">Settings</button>
+    <button onclick="goProfile()">Profile</button>
+</div>
 
-  <script src="menu.js"></script>
+<script>
+function goGame(){
+    window.location.href="rplace.html";
+}
+
+function goSettings(){
+    window.location.href="settings.html";
+}
+
+function goProfile(){
+    window.location.href="profile.html";
+}
+</script>
+
 </body>
 </html>
